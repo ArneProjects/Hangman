@@ -235,6 +235,7 @@ namespace Hangman
             get { return wordToGuess; }
             set { wordToGuess = value; }
         }
+
         public int NumberOfWrongGuess
         {
             get { return numberOfWrongGuesses; }
