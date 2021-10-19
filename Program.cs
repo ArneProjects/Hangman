@@ -20,13 +20,22 @@ namespace Hangman
             do
             {
                 Console.Clear();
-                Console.Write("Write the word the other players need to guess: ");
-                wordToGuess = Console.ReadLine();
-
-                Console.Write("Write the language of the word (ger or eng): ");
+                Console.Write("Select a language (ger or eng): ");
                 language = Console.ReadLine();
 
+                if(language == "ger")
+                    Console.Write("Schreibe das Wort, welches die anderen Spieler erraten müssen: ");
+                else
+                    Console.Write("Write the word the other players need to guess: ");
+
+                wordToGuess = Console.ReadLine();
+
                 g1 = new Game(wordToGuess, language, roundTime);
+
+                if (g1.CheckWord() == false || (!g1.Language.Equals("ger") && !g1.Language.Equals("eng")))
+                {
+                    g1.Tooltip(2);
+                }
             }
             while (g1.CheckWord() == false || (!g1.Language.Equals("ger") && !g1.Language.Equals("eng")));
 
@@ -42,28 +51,26 @@ namespace Hangman
                     if(g1.WordToGuess.Contains(Convert.ToString(guessedLetter)))
                     {
                         g1.NumberOfCorrectLetters += g1.WordToGuess.Count(x => x == guessedLetter);
-
-                        if (g1.NumberOfCorrectLetters == g1.WordToGuess.Length)
-                        {
-                            g1.Tooltip(4);
-                            g1.End = true;
-                        }
                     }
                     else
                     {
                         g1.Tooltip(3);
                         g1.NumberOfWrongGuess++;
-
-                        if (g1.NumberOfWrongGuess == 8)
-                            g1.End = true;
                     }
-                }
-                else
-                {
-                    g1.Tooltip(2);
                 }
 
                 g1.RenderBoard();
+
+                if (g1.NumberOfCorrectLetters == g1.WordToGuess.Length)
+                {
+                    g1.Tooltip(4);
+                    g1.End = true;
+                }
+                else if (g1.NumberOfWrongGuess == 8)
+                {
+                    g1.Tooltip(5);
+                    g1.End = true;
+                }
             }
 
             Console.ReadKey();
