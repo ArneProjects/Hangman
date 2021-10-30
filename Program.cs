@@ -23,7 +23,7 @@ namespace Hangman
                 Console.Write("Select a language (ger or eng): ");
                 language = Console.ReadLine();
 
-                if(language == "ger")
+                if (language == "ger")
                     Console.Write("Schreibe das Wort, welches die anderen Spieler erraten müssen: ");
                 else
                     Console.Write("Write the word the other players need to guess: ");
@@ -42,13 +42,13 @@ namespace Hangman
             g1.End = false;
             g1.RenderBoard();
 
-            while(!g1.End)
+            while (!g1.End)
             {
                 guessedLetter = Console.ReadKey().KeyChar;
 
-                if(g1.CheckLetter(guessedLetter))
+                if (g1.CheckLetter(guessedLetter))
                 {
-                    if(g1.WordToGuess.Contains(Convert.ToString(guessedLetter)))
+                    if (g1.WordToGuess.Contains(Convert.ToString(guessedLetter)))
                     {
                         g1.NumberOfCorrectLetters += g1.WordToGuess.Count(x => x == guessedLetter);
                     }

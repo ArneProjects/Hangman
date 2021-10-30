@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Hangman
 {
-    class Game
+    public class Game
     {
         protected String wordToGuess;
         protected String language;
@@ -44,13 +44,13 @@ namespace Hangman
         {
             bool retValue = false;
 
-            if(!String.IsNullOrEmpty(wordToGuess))
+            if (!String.IsNullOrEmpty(wordToGuess))
             {
                 if (!wordToGuess.Any(char.IsDigit))
                 {
                     Regex rgx = new Regex("^A-Za-z");
 
-                    if(!rgx.IsMatch(wordToGuess))
+                    if (!rgx.IsMatch(wordToGuess))
                     {
                         sizeOfWord = wordToGuess.Length;
 
@@ -70,8 +70,15 @@ namespace Hangman
             {
                 if (Char.IsLetter(letter))
                 {
-                    lettersGuessed.Add(letter);
-                    retValue = true;
+                    if (!lettersGuessed.Contains(letter))
+                    {
+                        lettersGuessed.Add(letter);
+                        retValue = true;
+                    }
+                    else
+                    {
+                        numberOfWrongGuesses++;
+                    }
                 }
                 else if (letter == '+')
                 {
@@ -94,7 +101,7 @@ namespace Hangman
         {
             int posOfChar;
 
-            if(!currentState.Any())
+            if (!currentState.Any())
             {
                 for (int i = 0; i < sizeOfWord; i++)
                 {
@@ -107,14 +114,15 @@ namespace Hangman
                 {
                     posOfChar = 0;
 
-                    if(wordToGuess.Contains(Convert.ToString(c)))
+                    if (wordToGuess.Contains(Convert.ToString(c)))
                     {
-                        foreach(char ch in wordToGuess)
+                        foreach (char ch in wordToGuess)
                         {
-                            if(c == ch)
+                            if (c == ch)
                             {
                                 currentState[posOfChar] = ch;
                             }
+
                             posOfChar++;
                         }
                     }
@@ -185,6 +193,7 @@ namespace Hangman
                     Console.WriteLine();
                     Console.Write("Guess a letter: ");
                     break;
+
                 default:
                     break;
             }
@@ -192,7 +201,7 @@ namespace Hangman
 
         public void DrawHangman()
         {
-            Console.OutputEncoding = System.Text.Encoding.GetEncoding(28591);
+            Console.OutputEncoding = Encoding.GetEncoding(28591);
 
             switch (numberOfWrongGuesses)
             {
@@ -200,6 +209,7 @@ namespace Hangman
                     for (int i = 0; i < 7; i++)
                         Console.WriteLine();
                     break;
+
                 case 1:
                     Console.WriteLine("________");
                     Console.WriteLine("        |");
@@ -210,6 +220,7 @@ namespace Hangman
                     Console.WriteLine("        |");
                     Console.WriteLine("----------");
                     break;
+
                 case 2:
                     Console.WriteLine("________");
                     Console.WriteLine("        |");
@@ -220,6 +231,7 @@ namespace Hangman
                     Console.WriteLine("        |");
                     Console.WriteLine("----------");
                     break;
+
                 case 3:
                     Console.WriteLine("________");
                     Console.WriteLine("        |");
@@ -230,6 +242,7 @@ namespace Hangman
                     Console.WriteLine("        |");
                     Console.WriteLine("----------");
                     break;
+
                 case 4:
                     Console.WriteLine("________");
                     Console.WriteLine("        |");
@@ -240,6 +253,7 @@ namespace Hangman
                     Console.WriteLine("        |");
                     Console.WriteLine("----------");
                     break;
+
                 case 5:
                     Console.WriteLine("________");
                     Console.WriteLine("        |");
@@ -250,6 +264,7 @@ namespace Hangman
                     Console.WriteLine("        |");
                     Console.WriteLine("----------");
                     break;
+
                 case 6:
                     Console.WriteLine("________");
                     Console.WriteLine("        |");
@@ -260,6 +275,7 @@ namespace Hangman
                     Console.WriteLine("        |");
                     Console.WriteLine("----------");
                     break;
+
                 case 7:
                     Console.WriteLine("________");
                     Console.WriteLine("        |");
@@ -270,6 +286,7 @@ namespace Hangman
                     Console.WriteLine("        |");
                     Console.WriteLine("----------");
                     break;
+
                 case 8:
                     Console.WriteLine("________");
                     Console.WriteLine(" |      |");
@@ -295,24 +312,28 @@ namespace Hangman
                     else
                         tempStr = "Type a letter, upper and lower case can be neglected.";
                     break;
+
                 case 2:
                     if (language == "ger")
                         tempStr = "Eingabe war kein Buchstabe, versuche es erneut.";
                     else
                         tempStr = "Input wasn't a letter, try again.";
                     break;
+
                 case 3:
                     if (language == "ger")
                         tempStr = "Falscher Buchstabe, du hast noch " + (7 - numberOfWrongGuesses) + " Versuche.";
                     else
                         tempStr = "Wrong letter, you have " + (7 - numberOfWrongGuesses) + " guesses left.";
                     break;
+
                 case 4:
                     if (language == "ger")
                         tempStr = "Du hast jeden Buchstaben des Wortes >> " + wordToGuess + " << erraten.";
                     else
                         tempStr = "You guessed every letter of the word >> " + wordToGuess + " <<.";
                     break;
+
                 case 5:
                     if (language == "ger")
                         tempStr = "Du hast das Wort >> " + wordToGuess + " << NICHT erraten.";
